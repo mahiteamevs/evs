@@ -149,6 +149,9 @@ app.get("/create",(req,res)=>{
         res.redirect("/"); 
     }
 })
+app.use((req,res)=>{
+    res.render('404');
+});
 
 app.listen(3000,function(){
     console.log("Server start at 3000");
