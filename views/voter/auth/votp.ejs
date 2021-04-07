@@ -1,0 +1,24 @@
+<%- include('../../partials/header') %> 
+
+
+<%- include('../../partials/title') %> 
+
+<h2 class="title centered">Election : </h2>
+<h3 class=" centered">Please Login to proceed further!</h3>
+<div class="wrapper1">
+
+    
+<form action="/votp" method="post" class="card">
+    <div class="input_field">
+        <label>Enter your OTP</label>
+        <input type="password" class="input" name ="votp">
+    </div>         
+    <div class="btn">
+        <input type="hidden" value="<%=email%>" class="input" name ="vEmail">
+        <input type="hidden" value="<%=linkId%>" name="linkId">
+        <input type="hidden" value="<%=electionId%>" name="electionId">
+        <input type="submit" value="Submit" class="submit_btn">
+    </div>
+</form>
+</div>
+<%- include('../../partials/footer') %> 

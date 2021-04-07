@@ -1,0 +1,38 @@
+<%- include('../../partials/header') %> 
+
+<link rel="stylesheet" href="/css/electnav.css">
+
+<%- include('../../partials/navigation') %> 
+<%- include('../../partials/electnav') %> 
+
+<!-- The text field -->
+<input type="hidden" id="myInput" value="http://localhost:3000/v/public/<%=publicLink%>"  >
+
+<!-- The button used to copy the text -->
+<button onclick="myFunction()">Copy the link</button>
+<center>
+    <h1>
+        <%=pageTitle%>
+        
+    </h1>
+    <h1>
+        <%=election.electionTitle%>
+        
+    </h1>
+    
+    <h1>
+        <a href="/public/<%=publicLink%>">click</a>
+        
+    </h1>
+    <form action="/o/create-wallet" method="post">
+        <input type="hidden" name="electionId" value="<%=election._id%>">
+        <button type="submit">Create My wallet</button>
+    </form>
+<form action="/o/announce" method="post">
+    <input type="hidden" value="<%=election.electionTitle%>" name="electionTitle">
+    <input type="hidden" value="<%=election._id%>" name="electionId"   >
+    <button type="submit">Announse</button>
+</form>
+</center>
+<script src="/js/simple.js"></script>
+<%- include('../../partials/footer') %> 
