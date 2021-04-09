@@ -63,7 +63,7 @@ exports.postLogin = (req, res, next) => {
             Voter.findOne({"election.electionId":electionId ,email:email})
             .then(voter=>{
                 if(!voter){
-                    console.log('not found');
+                    console.log('new one');
                     const v = new Voter({
                         email:email,
                         otpval : {
@@ -76,8 +76,7 @@ exports.postLogin = (req, res, next) => {
                         }
                     })
                   return v.save()
-                  .then(result=>{
-                    
+                  .then(result=>{     
                     
                   //sending the mails
                   async function sendMail(){
@@ -115,13 +114,15 @@ exports.postLogin = (req, res, next) => {
                 sendMail()
                 .then((result)=>{
                     console.log('Email sent....')
-                      //render
-                 res.render('voter/auth/votp',{
-                    email:email,
-                    linkId :linkId,
-                   electionId : electionId,
-                   pageTitle:"Otp verification | Plz log in to proceed further"
-                       });
+                    //render
+                      //  console.log(err);
+                      res.render('voter/auth/votp',{
+                          email:email,
+                          linkId :linkId,
+                         electionId : electionId,
+                         isNewOne : true,
+                         pageTitle:"Otp verification | Plz log in to proceed further"
+                             });
                   })
                 })
                 }else{
@@ -210,16 +211,30 @@ exports.postOtp = (req, res, next) => {
     voter.otpval.pass = undefined;
     voter.otpval.expireTime =undefined;
     return voter.save()
-    .then(result=>{
-        res.render('voter/dashboard',{
+    .then(voter=>{
+        //session of voter
+        req.session.isVLoggedIn = true;
+        req.session.voter = voter;
+        return req.session.save(err=>{
+          //  console.log(err);
+          res.redirect('/v/dashboard')
+        });  
         
-            pageTitle:"Otp verification | Plz log in to proceed further"
-        })
     })
+    .catch(err=>{console.log(err)})
    
   }else{
       console.log('error')
   }
     
 })
+}
+
+
+//destroying the session
+exports.postVlogout= (req, res)=>{
+    req.session.destroy(err=>{
+       // console.log(err);
+        res.redirect('/');
+    })
 }

@@ -13,20 +13,23 @@ exports.getOdashboard = (req, res, next)=>{
 
     res.render('organizer/dashboard',{
         admin:req.admin,
-        pageTitle:'Organizer | Welcome to the dashboard'
+        pageTitle:'Organizer | Welcome to the dashboard',
+        path:'/o/dashboard'
     });
 }
 
 exports.getOprofile = (req, res)=>{
     res.render('organizer/profile',{
-        pageTitle:'Organizer | Your profile'
+        pageTitle:'Organizer | Your profile',
+        path:'/o/profile'
     });
 }
 
 exports.getOcreateElection = (req, res)=>{
 
     res.render('organizer/createelection',{
-        pageTitle:'Organizer | Create a new election'
+        pageTitle:'Organizer | Create a new election',
+        path:'/o/create'
     })
 }
 

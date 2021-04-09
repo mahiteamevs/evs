@@ -9,7 +9,7 @@ router.get('/dashboard',isOauth, organizerController.getOdashboard);
 router.get('/profile',isOauth, organizerController.getOprofile);
 router.get('/create',isOauth, organizerController.getOcreateElection);
 router.post('/create-election',isOauth,organizerController.postOcreateElection);
-router.get('/:adminName/:electionTitle/:electionId',isOauth, organizerController.getElectionDashboard);
+router.get('/:electionTitle/:electionId',isOauth, organizerController.getElectionDashboard);
 
 
 //delete election

@@ -2,6 +2,7 @@
 
 
 .wrapper{
+  margin-top: 50px;
   display: flex;
   position: relative;
 }
@@ -21,6 +22,7 @@
   text-transform: uppercase;
   text-align: center;
   margin-bottom: 30px;
+  
 }
 
 .wrapper .sidebar ul li{
@@ -90,12 +92,31 @@
   margin-bottom: 20px;
 }
 @media(min-width: 508px){
+  
   .wrapper .sidebar{
-    width: 200px;
+    width: 210px;
     height: 100%;
     background: #4481eb;
     padding: 20px 0px;
     position: fixed;
+  }
+  
+
+}
+@media(max-width:508px){
+  .wrapper .sidebar{
+    width: 110px;
+    height: 100%;
+    background: #4481eb;
+    padding: 20px 0px;
+    position: fixed;
+  }
+  .wrapper .sidebar h2{
+    font-size: 14px;
+  }
+  .wrapper .sidebar li{
+    font-size: 13px;
+    line-height: 15px;
   }
 }
 @media (max-height: 500px){

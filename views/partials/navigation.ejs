@@ -18,17 +18,15 @@
     
                     <div class="nav__menu">
                         <ul class="nav__list">
-                            <li class="nav__item"><a href="/o/dashboard" class="nav__link active"><i class="fas fa-home"></i>Home</a></li>
-    
-                            
-    
-                            <li class="nav__item"><a href="/o/create" class="nav__link"><i class="fas fa-plus"></i>Create</a></li>
+                            <li class="nav__item"><a href="/o/dashboard" class="nav__link <%= path === '/o/dashboard' ? 'active' : '' %>">Home<i class="fas fa-home"></i></a></li>
+
+                            <li class="nav__item"><a href="/o/create" class="nav__link <%= path === '/o/create' ? 'active' : '' %>">Create<i class="fas fa-plus" ></i></a></li>
                            
                             <li class="nav__item dropdown">
-                                <a href="/o/profile" class="nav__link dropdown__link"><i class="fas fa-user"></i>Profile</i></a>
+                                <a href="/o/profile" class="nav__link dropdown__link <%= path === '/o/profile' ? 'active' : '' %>">Profile<i class="fas fa-user"></i></i></a>
                             </li>
                             <li class="nav__item dropdown">
-                                <a href="" class="nav__link dropdown__link">About</i></a>
+                                <a href="" class="nav__link dropdown__link <%= path === '/about' ? 'active' : '' %>">About</i></a>
                             </li>
                             <li class="nav__item"><form action="/ologout" method="post"><button class="nav__link" type="submit">Logout</button></form></li>
                         </ul>

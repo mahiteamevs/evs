@@ -10,7 +10,7 @@ const MongoDBstore = require('connect-mongodb-session')(session);
 const error404 = require('./controllers/error');
 //model requires
 const Admin = require('./models/admin');
-
+const Voter = require('./models/voter');
 //mongodb url
 const MONGODB_URI = "mongodb://localhost:27017/mvs";
 
@@ -21,6 +21,7 @@ const oSessionStore = new MongoDBstore({        //calling constructor
   uri:MONGODB_URI,
   collection:'osession'
 });  
+
 
 //routes
 const oraganizerRoutes = require('./routes/oraganizer');
@@ -61,6 +62,29 @@ app.use((req, res, next) => {
 //local variable
 app.use((req, res,next)=>{
   res.locals.isAuthenticated = req.session.isLoggedIn;
+  next();
+});
+
+//voter 
+
+
+// //flash and csrf
+
+//organizer session logged
+app.use((req, res, next) => {
+  if(!req.session.voter){
+    return next();
+  }
+  Voter.findById(req.session.voter._id)
+    .then(voter => {
+      req.voter = voter;
+      next();
+    })
+    .catch(err => console.log(err));
+});
+//local variable
+app.use((req, res,next)=>{
+  res.locals.isVAuthenticated = req.session.isVLoggedIn;
   next();
 });
 

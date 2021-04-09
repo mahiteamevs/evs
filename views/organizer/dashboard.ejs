@@ -15,7 +15,7 @@
                <article class="card product-item">
                
                      <h1 class="product__title">
-                     <a class="card__header product__title para " href="/o/<%=admin.email%>/<%=el.electionTitle%>/<%=el.electionId%>"><%=el.electionTitle%>
+                     <a class="card__header product__title para " href="/o/<%=el.electionTitle%>/<%=el.electionId%>"><%=el.electionTitle%>
                        
                       </h1>
                      </a>
@@ -27,7 +27,7 @@
                     <div class="tlink"><a   href=""><i class="fas fa-project-diagram"></i></a> </div>
                     <div class="btndel">
                      <form action="/o/delete-election" method="post">
-                        <button class="btn" name="electionId" value="<%=el.electionId%>" style="border-width: 0;"><i class="far fa-trash-alt"></i></button>
+                        <button class="btn" name="electionId" value="<%=el.electionId%>" style="border-width: 0;"><i class="far fa-trash-alt" ></i></button>
                           </form>   
                     </div>      
                   

@@ -3,13 +3,26 @@ const Blockchain = require('../models/blockchain');
 
 
 exports.getVdashboard = (req, res)=>{
-    res.send('voter ')
+    res.render('voter/dashboard',{
+        voter:req.voter,
+        pageTitle:'Voter | Welcome to the dashboard',
+        path:'/v/dashboard'
+    });
 }
 
 //voter came here firest using public link
 exports.getVoterAuthFirst = (req, res, next)=>{
 
     res.render('voter/voterauth');
+}
+
+//voter came here firest using public link
+exports.getElectionDetails = (req, res, next)=>{
+    res.render('election/electiondetail',{
+        voter:req.voter,
+        pageTitle:`${req.voter.election.electionTitle} | Welcome to the election details`,
+        path:'/v/election-details'
+    });
 }
 
 
