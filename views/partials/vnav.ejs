@@ -32,7 +32,7 @@
                             <li class="nav__item dropdown">
                                 <a href="" class="nav__link dropdown__link <%= path === '/v/dashboard' ? 'active' : '' %>">About</i></a>
                             </li>
-                            <li class="nav__item"><form action="/vlogout" method="post"><button class="nav__link" type="submit">Logout</button></form></li>
+                            <li class="nav__item"><form action="/vlogout" method="post"><input type="hidden" name="_csrf" value="<%=csrfToken%>"><button class="nav__link" type="submit">Logout</button></form></li>
                         </ul>
                     </div>
                 </div>

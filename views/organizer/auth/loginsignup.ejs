@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<%- include('../../partials/header') %> 
     <script
       src="https://kit.fontawesome.com/64d58efce2.js"
       crossorigin="anonymous"
@@ -11,21 +7,25 @@
     <title>Mahi Voting System | login</title>
   </head>
   <body>
-    <div class="container">
+    <div class="container <% if (isSignupMode) { %>sign-up-mode<% } %>">
       <div class="forms-container">
         <div class="signin-signup">
-           
-          <form action="/ologin" method="post" class="sign-in-form">
-            <h3>Welcome to Blockchain Voting System <i class="fas fa-vote-yea"></i></h3>
-            <h2 class="title">Sign in</h2>
+          
+          <form action="/ologin" method="post" class="sign-in-form" novalidate> 
+            <% if(errorMsg && (!isSignupMode)) {%> 
+              <div class="user-message user-message-error"><%= errorMsg %></div>
+          <% } %> 
+            
+            <h2 class="title">Sign in <i class="fas fa-sign-in-alt"></i></h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="email" name="email" placeholder="email" />
+              <input type="email" name="email" placeholder="email" value="<%=oldInput.email%>" />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" name="password" placeholder="Password" />
+              <input type="password" name="password" placeholder="Password" value="<%=oldInput.password%>" />
             </div>
+            <input type="hidden" name="_csrf" value="<%=csrfToken%>">
             <input type="submit" value="Login" class="btn solid" />
             <p class="social-text">Or Sign in with social platforms</p>
             <div class="social-media">
@@ -37,24 +37,28 @@
           </form>
        
           <form action="/osignup" method="post" class="sign-up-form">
-            <h3 class="header_t">Welcome to Mahi Voting System <i class="fas fa-vote-yea"></i></h3>
-            <h2 class="title">Sign up</h2>
+            <% if(errorMsg && (isSignupMode)) {%> 
+              <div class="user-message user-message-error"><%= errorMsg %></div>
+          <% } %> 
+         
+            <h2 class="title">Sign up  <i class="fas fa-user-plus"></i></h2>
             <div class="input-field">
-              <i class="fas fa-envelope"></i>
-              <input type="text" name="aname" placeholder="Full Name" />
+              <i class="far fa-address-book"></i>
+              <input type="text" name="aname" placeholder="Full Name"value="<%=oldInput.aname%>" />
             </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" name="email" placeholder="Email" />
+              <input type="email" name="aemail" placeholder="Email" value="<%=oldInput.aemail%>" />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" name="password" placeholder="Password" />
+              <input type="password" name="apassword" placeholder="Password" value="<%=oldInput.apassword%>"/>
             </div>
             <div class="input-field">
                 <i class="fas fa-lock"></i>
-                <input type="password" name="cpassword" placeholder="Confirm Password" />
+                <input type="password" name="cpassword" placeholder="Confirm Password" value="<%=oldInput.cpassword%>" />
               </div>
+              <input type="hidden" name="_csrf" value="<%=csrfToken%>">
             <input type="submit" class="btn" value="Sign up" />
             <p class="social-text">Or Sign up with social platforms</p>
             <div class="social-media">
@@ -69,10 +73,12 @@
       <div class="panels-container">
         <div class="panel left-panel">
           <div class="content">
-            <h3>New here ?<i class="fas fa-vote-yea"></i></h3>
+            <h2>Blockchain Voting System <i class="fas fa-vote-yea"></i></h2>
+            
             <p class="click">
                 <a href="/demo" > <i class="fas fa-hand-point-right"> click here to know how mvs work(demo) </i></a>
             </p>
+            <h3>New here ?<i class="fas fa-vote-yea"></i></h3>
             <p>Click sigup. To create your own account.</p>
             <!-- <h2>clic</h2> -->
             <button class="btn transparent" id="sign-up-btn">
@@ -83,6 +89,10 @@
         </div>
         <div class="panel right-panel">
           <div class="content">
+            <h2>Blockchain Voting System <i class="fas fa-vote-yea"></i></h2>   
+            <p class="click">
+                <a href="/demo" > <i class="fas fa-hand-point-right"> click here to know how mvs work(demo) </i></a>
+            </p>
             <h3>One of us ?</h3>
             <p>
               The most secure technology we've  ever came across is blockchain!

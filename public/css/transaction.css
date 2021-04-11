@@ -12,7 +12,7 @@ h3{
 }
 .table-row{
     display: table;
-    width: 120%;
+    width: 500px;
     margin: 10px auto;
     font-family: sans-serif;
     background: transparent;
@@ -48,11 +48,12 @@ h3{
 }
 /* for mobile view dude */
 @media only screen and (max-width: 600px) {
-  /* .table-row {
-    font-size: 11px; */
+  .table-row {
+    width: 300px;
+  }
     .wrap-transactions{
         display: flex;
-        width: 70%;
+        width: 40%;
         margin: 10px 0;
         font-size: 11px;
         /* flex-flow: row wrap; */

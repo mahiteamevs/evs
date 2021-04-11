@@ -24,9 +24,10 @@
                   </div>
                   <div class="card__actions">  
                  <div class="wrap-del">
-                    <div class="tlink"><a   href=""><i class="fas fa-project-diagram"></i></a> </div>
+                    <div class="tlink"><a   href="/p/transaction/?electId=<%=el.electionId%>"><i class="fas fa-project-diagram"></i></a> </div>
                     <div class="btndel">
                      <form action="/o/delete-election" method="post">
+                        <input type="hidden" name="_csrf" value="<%=csrfToken%>">
                         <button class="btn" name="electionId" value="<%=el.electionId%>" style="border-width: 0;"><i class="far fa-trash-alt" ></i></button>
                           </form>   
                     </div>      

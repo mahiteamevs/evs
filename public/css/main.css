@@ -25,3 +25,20 @@ a {
 .centered {
 	text-align: center;
   }
+
+  .user-message{
+	margin: auto;
+	width: 80%;
+	border: 1px solid #ffeb3b;
+	padding: 0.9rem;
+	border-radius: 2.5px;
+	background: #b9c9ff;
+	text-align: center;
+	color: #00695c;
+  }
+  .user-message-error{
+	border-color: red;
+	background: rgb(256, 176,176);
+	color: red;
+  }
+  

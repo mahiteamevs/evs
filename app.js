@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const path = require('path');
 const session = require('express-session');
 const MongoDBstore = require('connect-mongodb-session')(session);
+const csrf = require('csurf');
 //controllers require
 const error404 = require('./controllers/error');
 //model requires
@@ -21,14 +22,14 @@ const oSessionStore = new MongoDBstore({        //calling constructor
   uri:MONGODB_URI,
   collection:'osession'
 });  
-
+const csrfProtection = csrf();      //csrf token
 
 //routes
 const oraganizerRoutes = require('./routes/oraganizer');
 const authoRoutes = require('./routes/oauth');
 const voterRoutes = require('./routes/voter');
 const authvRoutes = require('./routes/vauth');
-
+const electRoutes = require('./routes/electiontransaction');
 
 
 app.set('view engine', 'ejs');
@@ -46,7 +47,7 @@ app.use(session({
 
 
 //flash and csrf
-
+app.use(csrfProtection); 
 //organizer session logged
 app.use((req, res, next) => {
   if(!req.session.admin){
@@ -62,6 +63,7 @@ app.use((req, res, next) => {
 //local variable
 app.use((req, res,next)=>{
   res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
   next();
 });
 
@@ -85,6 +87,7 @@ app.use((req, res, next) => {
 //local variable
 app.use((req, res,next)=>{
   res.locals.isVAuthenticated = req.session.isVLoggedIn;
+  res.locals.csrfToken = req.csrfToken();
   next();
 });
 
@@ -99,7 +102,7 @@ app.use('/o', oraganizerRoutes.routes);
 app.use('/v', voterRoutes.routes);
 app.use(authoRoutes);
 app.use(authvRoutes);
-
+app.use('/p/',electRoutes.routes);
 app.use(error404.get404);
 
 mongoose
