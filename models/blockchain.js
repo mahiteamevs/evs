@@ -31,17 +31,20 @@ const blockchainSchema = new Schema({
                 type:String
             },
             sender:{
-                type: String,
-                required :true
+                type: String
             },
             receiver :{
-                type: String,
-                required :true
+                type: String
             },
             vote : {
-                type: Number,
-                required :true
-            }
+                type: Number
+            },
+            inputAdrs : String,
+            inputVal:Number,
+            output:[{
+                receiver:String,
+                val:Number
+            }]
         }]
     }],
     memTransac:[{
@@ -115,49 +118,141 @@ blockchainSchema.methods.mining = function(){
 
 }
 
-function minedBlock(lastBlock) {
-    const lastHash = lastBlock.hash;
+const minedBlock = (...inputs) =>{
     let hash;
     const timestamp = Date.now();
-
     //proof of work
     let nonce =0;
       do {
         nonce++;
         
        // difficulty = Block.adjustDifficulty({ originalBlock: lastBlock, timestamp });
-        hash = cryptoHash(timestamp, lastHash, nonce);
+        hash = cryptoHash(inputs, nonce);
        // console.log(nonce,hash);
       } while (hash.substring(0, 4) !== '0'.repeat(4));              // till two 0 met
  
       return { timestamp, nonce, hash };
 }
 
+const calculateBalance = (chain, address) =>{
+    let hasConductedTransaction = false;
+    let outputsTotal = 0;
 
-blockchainSchema.methods.addTransaction = function(amount,sender,receiver){
+    for (let i=chain.length-1; i>0; i--) {     //not till genesis block
+        const block = chain[i];
+
+  
+         for (let transaction of block.transactions) {
+             let newOutputBal= 0;
+
+          if (transaction.inputAdrs === address) {
+            hasConductedTransaction = true;
+          }
+           const addressOutput = [...transaction.output];
+           addressOutput.forEach(a=>{
+               if(a.receiver===address){
+                newOutputBal=a.val;
+                
+               }
+           })
+          if (newOutputBal) {
+            outputsTotal = outputsTotal + newOutputBal;
+          }
+
+        }
+        if (hasConductedTransaction) {
+           
+            break;
+          }
+      }
+
+      return outputsTotal;
+}
+blockchainSchema.methods.knowBalance = function(address){
     const wholeChain = [...this.chain];
-    const hash = cryptoHash(amount,sender,receiver);
+    let availableBal = calculateBalance(wholeChain, address);
+    return availableBal;
+}
+
+
+blockchainSchema.methods.addTransaction = function(sender, amountSend, receiver){
+   // let leftBal = amountSend;
+     const wholeChain = [...this.chain];
+     const lastHash = wholeChain[wholeChain.length-1].hash;
+     const {timestamp, nonce, hash } = minedBlock(receiver, amountSend,lastHash);
+
+     let availableBal = calculateBalance(wholeChain, sender);
+     if(!availableBal){
+         return false;
+     }
+     //console.log(availableBal)
+    let tempBal = availableBal;
+    console.log(amountSend)
+   console.log(sender, amountSend, receiver);
+
+    let outputMap = receiver.map(r=>{
+        availableBal -= 1;
+        return {receiver:r.pub,
+            val:amountSend}
+    })
+
     
-    if(sender==="coinbase"){
+
+    outputMap.push({
+        receiver:sender,
+            val:availableBal
+    })
+
+    const transaction = [{ 
+        hash: cryptoHash(outputMap),
+        inputAdrs : sender,
+            inputVal:tempBal,
+            output:outputMap
+    }];
+
+  
        wholeChain.push({
-            index:2,
-            timestamp : Date.now(),
-            nonce :3,
+            index:wholeChain[wholeChain.length-1].index+1,
+            timestamp : timestamp,
+            nonce :nonce,
             hash:hash,
-            prevHash : "jhss",
-            transactions:[{
-                hash:hash,
-            sender:sender,
-            receiver:receiver,
-            vote:amount
-            }]
+            prevHash : lastHash,
+            transactions:transaction
         });
-    }
 
    this.chain= wholeChain;
     return this.save();
 }
 
+blockchainSchema.methods.coinBaseTransaction = function(receiver, amount){
+    const wholeChain = [...this.chain];
+    const lastHash = wholeChain[wholeChain.length-1].hash;
+   // let hash;
+   const {timestamp, nonce, hash } = minedBlock(receiver, amount,lastHash);
+
+      const tHash = cryptoHash(timestamp, amount);
+      let outputMap =[{
+           receiver:receiver,
+                val:amount
+        }]
+        const transaction = [{ 
+                hash: cryptoHash(outputMap),
+                inputAdrs : "COIN BASE BIT VOTE TRANSFERED",
+                output:outputMap
+            }];
+
+       wholeChain.push({
+            index:2,
+            timestamp : timestamp,
+            nonce :nonce,
+            hash:hash,
+            prevHash : lastHash,
+            transactions:transaction
+        });
+
+   this.chain= wholeChain;
+    return this.save();
+}
 
 
 module.exports = mongoose.model('Blockchain',blockchainSchema);

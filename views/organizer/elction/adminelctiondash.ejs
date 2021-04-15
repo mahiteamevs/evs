@@ -1,7 +1,9 @@
 <%- include('../../partials/header') %> 
 
 <link rel="stylesheet" href="/css/electnav.css">
-
+<%- include('../../partials/title') %> 
+<link href="https://fonts.googleapis.com/css?family=Poppins|Work+Sans&display=swap" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <%- include('../../partials/navigation') %> 
 <%- include('../../partials/electnav') %> 
 
@@ -9,30 +11,53 @@
 <input type="hidden" id="myInput" value="http://localhost:3000/v/public/<%=publicLink%>"  >
 
 <!-- The button used to copy the text -->
-<button onclick="myFunction()">Copy the link</button>
+
 <center>
-    <h1>
-        <%=pageTitle%>
-        
-    </h1>
+    <br>
     <h1>
         <%=election.electionTitle%>
         
     </h1>
     
-    <h1>
-        <a href="/public/<%=publicLink%>">click</a>
-        
-    </h1>
-    <form action="/o/create-wallet" method="post">
-        <input type="hidden" name="electionId" value="<%=election._id%>">
-        <button type="submit">Create My wallet</button>
-    </form>
-<form action="/o/announce" method="post">
-    <input type="hidden" value="<%=election.electionTitle%>" name="electionTitle">
-    <input type="hidden" value="<%=election._id%>" name="electionId"   >
-    <button type="submit">Announse</button>
-</form>
+</head>
+<body>
+
+
+    
+    <div class="wrapper1">
+        <div class="card">
+            <h3>
+                Public Link for voters   click here</a>     
+              </h3>
+            <p class="parahori" id="text1"><a href="/public/<%=publicLink%>">http://localhost:3000/public/<%=publicLink%></a></p>
+            <button class="copyButton" id="copyButton1">
+                Copy To Clipboard <i class="far fa-copy"></i>
+            </button>
+            <!-- <p id="text2">How are you now.</p>
+            <button class="copyButton" id="copyButton2">
+                Copy To Clipboard
+            </button> -->
+            <span class="alert">Copied!</span>
+            
+          </div>
+    </div>
 </center>
+<script>
+    function copy(copyId){
+        var $inp=$("<input>");
+        $("body").append($inp);
+        $inp.val($(""+copyId).text()).select();
+        document.execCommand("copy");
+        $inp.remove();
+        $(".alert").fadeIn(500,function(){
+            $(".alert").fadeOut();
+        });
+    }
+    $(document).ready(function(){
+        $("#copyButton1").click(function(){
+            copy('#text1');
+        });
+    });
+</script>
 <script src="/js/simple.js"></script>
 <%- include('../../partials/footer') %> 

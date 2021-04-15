@@ -13,7 +13,13 @@ const electionSchema = new Schema({
         },
         candAge :{
             type:Number
+        },
+        candidateWallet : {
+            pub:String,
+            prv: String,
+            balance: Number
         }
+
     }],
     voterMails : [{
         voterMail:{
@@ -39,6 +45,23 @@ const electionSchema = new Schema({
     desc:{
         type:String
     },
+    wallet :{
+      isCreated : Boolean,
+      hasCoinbase : Boolean,
+      hasAnnounced : Boolean,
+      adminWallet :{
+          pub:String,
+          prv: String
+      },
+      candidateWallet : [{
+          pub:String,
+          prv: String,
+          balance: Number
+      }],
+      voterWallet : [{
+          pub:String
+      }]
+    },
     blockchain : {
         type:Schema.Types.ObjectId,
         ref:'Blockchain'
@@ -52,5 +75,9 @@ const electionSchema = new Schema({
         }
     }
 });
+
+electionSchema.methods.addPubToCandidate = function(){
+
+}
 
 module.exports = mongoose.model('Election', electionSchema);

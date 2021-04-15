@@ -14,6 +14,16 @@ router.get('/election-details',isVauth,voterController.getElectionDetails);
 //voter verification
 // router.get('/public/:link',voterController.getVoterVerification);
 
+//wallet
+router.get('/wallet', isVauth,voterController.getWallet);
+router.post('/wallet', isVauth,voterController.postWallet);
+
+//balance
+router.post('/balance',isVauth,voterController.postBallance);
+
+//voting
+router.get('/vote',isVauth,voterController.getVote);
+router.post('/vote', isVauth,voterController.postVote);
 
 exports.routes = router; 
 

@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="/css/transaction.css">
-    <title>All transaction here | dude</title>
-</head>
+
+<%- include('../partials/header') %> 
+
+<link rel="stylesheet" href="/css/transaction.css">
+<%- include('../partials/title') %> 
+<%- include('../partials/navigation') %> 
 <body>
     <div class="wrap-transactions">
 
@@ -18,30 +15,31 @@
                 <p>Hight</p>
             </div>
             <div class="table-cell">
-                <p>Mined</p>
+                <p>Timestamp</p>
             </div>
             <div class="table-cell">
-                <p>Miner</p>
+                <p>Hash</p>
             </div>
             <div class="table-cell last-cell">
-                <p>Size</p>
+                <p>Previous Hash</p>
             </div> 
         </div>
-
+       <% chain.forEach(block=>{ %> 
         <div class="table-row">
             <div class="table-cell first-cell">
-                <p>678301</p>
+                <p class="parahori"><%=block.index%> </p>
             </div>
             <div class="table-cell">
-                <p>8 Minutes</p>
+                <p class="parahori"><%=block.timestamp%></p>
             </div>
             <div class="table-cell last-cell">
-                <p>Unknown</p>
+                <p class="parahori"><%=block.hash%></p>
             </div>   
             <div class="table-cell last-cell">
-                  <p>1,211,395 bytes</p>
+                  <p class="parahori"><%=block.prevHash%></p>
             </div>   
         </div>
+        <% }) %> 
 
        </div>
         
@@ -81,5 +79,4 @@
         
                 </div>
         </div>
-         </body>
-         </html>
+        <%- include('../partials/footer') %> 

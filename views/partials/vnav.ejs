@@ -20,19 +20,24 @@
     
                     <div class="nav__menu">
                         <ul class="nav__list">
-                            <li class="nav__item"><a href="/v/dashboard" class="nav__link <%= path === '/v/dashboard' ? 'active' : '' %>">Home<i class="fas fa-home"></i></a></li>
+                            <li class="nav__item"><a href="/v/dashboard" class="nav__link <%= path === '/v/dashboard' ? 'active' : '' %>">Home <i class="fas fa-home"></i></a></li>
     
-                            
+
     
-                            <li class="nav__item"><a href="/v/election-details" class="nav__link <%= path === '/v/election-details' ? 'active' : '' %>"><i class="fas fa-plus"></i>Election Details</a></li>
                            
                             <li class="nav__item dropdown">
-                                <a href="" class="nav__link dropdown__link <%= path === '/v/dashboard' ? 'active' : '' %>"><i class="fas fa-user"></i>Profile</i></a>
+                                <a href="/v/profile" class="nav__link dropdown__link <%= path === '/v/profile' ? 'active' : '' %>"><%=voter.email%>  <i class="fas fa-chevron-circle-down dropdown__icon"></a></i>
+                                <ul class="dropdown__menu">
+                                    <li class="dropdown__item"><a href="/v/wallet" class="nav__link <%= path === '/v/wallet' ? 'active' : '' %>">Wallet <i class="fas fa-wallet"></i></a></li>
+                                    <li class="dropdown__item"><a href="/v/election-details" class="nav__link <%= path === '/v/election-details' ? 'active' : '' %>">Election Details <i class="fas fa-plus"></i></a></li>
+
+                                    <li class="dropdown__item"><form action="/vlogout" method="post"><input type="hidden" name="_csrf" value="<%=csrfToken%>"><button class="nav__link" type="submit">Logout</button></form></li>
+
+                                </ul>
                             </li>
                             <li class="nav__item dropdown">
-                                <a href="" class="nav__link dropdown__link <%= path === '/v/dashboard' ? 'active' : '' %>">About</i></a>
+                                <a href="/about" class="nav__link dropdown__link <%= path === '/about' ? 'active' : '' %>">About BVS</i></a>
                             </li>
-                            <li class="nav__item"><form action="/vlogout" method="post"><input type="hidden" name="_csrf" value="<%=csrfToken%>"><button class="nav__link" type="submit">Logout</button></form></li>
                         </ul>
                     </div>
                 </div>

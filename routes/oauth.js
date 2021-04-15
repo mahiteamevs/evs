@@ -2,10 +2,10 @@ const express = require("express");
 const Admin = require('../models/admin');
 const {body} = require("express-validator");
 const authVcontroller = require("../controllers/oauthController");
-
+const isLog = require('../middlewares/islogin');
 const router = express.Router();
 
-router.get('/', authVcontroller.getLogin);
+router.get('/',isLog, authVcontroller.getLogin);
 router.post('/ologin',
 [
     body('email','Please enter a valid email address!')
@@ -49,6 +49,24 @@ router.post('/osignup',
 authVcontroller.postSignup);
 router.post('/ologout', authVcontroller.postOlogout);
 
+//reset password
 
+router.get('/oreset',
+[
+    body('Please enter a valid email address!')
+    .isEmail()
+    .normalizeEmail()
+],
+authVcontroller.getReset);
+
+router.post('/oreset',isLog,  authVcontroller.postReset);
+
+router.get('/resetpassword/:aid/:key', authVcontroller.getNewPass)
+router.post('/onewpass',
+[
+    body('password',"Please enter your password with minimum 5 characters!")
+    .isLength({min:5})
+]
+,authVcontroller.postNewPass);
 
 module.exports = router;

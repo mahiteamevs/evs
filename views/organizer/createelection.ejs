@@ -10,14 +10,17 @@
             <p>Plzz Fill The Form</p>
         </div>
        <!-- // <div > -->
+        <% if(errorMsg) {%> 
+            <div class="user-message user-message-error"><%= errorMsg %></div>
+        <% } %> 
             <form action="/o/create-election" method="post" class="card">
                 <div class="input_field">
                     <label>Election Title</label>
-                    <input type="text" class="input" name ="electionTitle">
+                    <input type="text" class="input <%= validationErrors.find(e=> e.param ==='electionTitle') ? 'invalid' : ''%> " name ="electionTitle">
                 </div>
                 <div class="input_field">
                     <label>No.of Candidate</label>
-                    <input type="text" class="input" id="NoOfCandidate">
+                    <input type="text" class="input <%= validationErrors.find(e=> e.param ==='NoOfCandidate') ? 'invalid' : ''%> " id="NoOfCandidate" name="NoOfCandidate">
                 </div>
                 
                 <div class="btn">
@@ -26,7 +29,7 @@
                 <div id="showCandidate"></div>
                 <div class="input_field">
                     <label>No.of voters</label>
-                    <input type="text" class="input" id="NoOfVoters">
+                    <input type="text" class="input <%= validationErrors.find(e=> e.param ==='NoOfVoters') ? 'invalid' : ''%> " id="NoOfVoters" name="NoOfVoters">
                 </div>
                 <div class="btn">
                     <button type="button" class="submit_btn" id="btnVoters">create</button>
@@ -36,7 +39,7 @@
                 
                 <div class="input_field">
                     <label>voter verifcation Id Type</label>
-                    <input type="text" class="input" name="typeOfId">
+                    <input type="text" class="input <%= validationErrors.find(e=> e.param ==='typeOfId') ? 'invalid' : ''%> " name="typeOfId">
                 </div>
                 <div class="input_field">
                 <label>select the expiration time for voter verifcation form</label>
@@ -47,7 +50,7 @@
                 <div class="input_field">
                   
                     <label>Description</label>
-                    <textarea class="input" name="desc" id=""  rows="5"></textarea>
+                    <textarea class="input <%= validationErrors.find(e=> e.param ==='desc') ? 'invalid' : ''%> " name="desc" id=""  rows="5"></textarea>
                 </div>
                 <input type="hidden" name="_csrf" value="<%=csrfToken%>">
                 <div class="btn">

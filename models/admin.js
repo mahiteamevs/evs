@@ -14,6 +14,8 @@ const adminSchema = new Schema({
         type:String,
         required:true
     },
+    resetToken:String,
+    resetTokenExpiration:String,
     elections:[{
         electionTitle : {
             type:String

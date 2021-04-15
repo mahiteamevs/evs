@@ -20,22 +20,27 @@
     
                     <div class="nav__menu">
                         <ul class="nav__list">
-                            <li class="nav__item"><a href="/o/dashboard" class="nav__link <%= path === '/o/dashboard' ? 'active' : '' %>">Home<i class="fas fa-home"></i></a></li>
+                            <li class="nav__item"><a href="/o/dashboard" class="nav__link <%= path === '/o/dashboard' ? 'active' : '' %>">Home <i class="fas fa-home"></i></a></li>
 
-                            <li class="nav__item"><a href="/o/create" class="nav__link <%= path === '/o/create' ? 'active' : '' %>">Create<i class="fas fa-plus" ></i></a></li>
+                            <li class="nav__item"><a href="/o/create" class="nav__link <%= path === '/o/create' ? 'active' : '' %>">Create <i class="fas fa-plus" ></i></a></li>
                            
                             <li class="nav__item dropdown">
-                                <a href="/o/profile" class="nav__link dropdown__link <%= path === '/o/profile' ? 'active' : '' %>">Profile<i class="fas fa-user"></i></i></a>
+                                <a href="/o/profile" class="nav__link dropdown__link <%= path === '/o/profile' ? 'active' : '' %>"><%=admin.name%><i class="fas fa-chevron-circle-down dropdown__icon"></i></i></a>
+                                <ul class="dropdown__menu">
+                                    <li class="dropdown__item">
+                                        <a href="/about" class="nav__link <%= path === '/about' ? 'active' : '' %>">About BVS</i></a>                                    </li>
+                                    <li class="dropdown__item"><form action="/ologout" method="post"><input type="hidden" name="_csrf" value="<%=csrfToken%>"><button class="nav__link" type="submit">Logout <i class="fas fa-sign-out-alt"></i></button></form></li>
+                                </ul>
+
                             </li>
-                            <li class="nav__item dropdown">
-                                <a href="" class="nav__link dropdown__link <%= path === '/about' ? 'active' : '' %>">About</i></a>
-                            </li>
-                            <li class="nav__item"><form action="/ologout" method="post"><input type="hidden" name="_csrf" value="<%=csrfToken%>"><button class="nav__link" type="submit">Logout</button></form></li>
+                            
+                            
                         </ul>
                     </div>
                 </div>
             </nav>
         </header>
+       
 
         <!--===== MAIN JS =====-->
       

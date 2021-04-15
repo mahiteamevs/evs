@@ -32,11 +32,21 @@
   border-top: 1px solid rgba(255,255,255,0.05);
 }    
 
-.wrapper .sidebar ul li a{
+/* .wrapper .sidebar ul li a{
+  color: #0E1026;
+  display: block;
+} */
+/* .wrapper .sidebar ul li a .active{
+  color: #fff;
+} */
+
+.elect__nav__link {
   color: #0E1026;
   display: block;
 }
-
+.eactive {
+  color: #fff;
+}
 .wrapper .sidebar ul li a .fas{
   width: 25px;
 }
@@ -44,6 +54,8 @@
 .wrapper .sidebar ul li:hover{
   background-color: #4481eb;
 }
+
+
     
 .wrapper .sidebar ul li:hover a{
   color: #fff;
@@ -91,6 +103,9 @@
 .wrapper .main_content .info div{
   margin-bottom: 20px;
 }
+
+
+
 @media(min-width: 508px){
   
   .wrapper .sidebar{

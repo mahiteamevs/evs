@@ -1,13 +1,34 @@
 const Election = require('../models/election');
 const Blockchain = require('../models/blockchain');
+var EC = require('elliptic').ec;
+var ec = new EC('secp256k1');    //for rsa and generating keypair
+
+//pdfkit
+const path = require('path');
+const fs = require('fs');
+const pdfDocuments = require('pdfkit');
+
 
 
 exports.getVdashboard = (req, res)=>{
-    res.render('voter/dashboard',{
+    
+    // req.voter
+    // .populate('election.electionId')
+    // .execPopulate()
+    // .then(e=>{
+    //     console.log(e.wallet.hasAnnounced)
+    // })
+    Election.findById(req.voter.election.electionId)
+    .then(e=>{
+        // console.log(e.wallet.hasAnnounced)
+         res.render('voter/dashboard',{
         voter:req.voter,
+        election:e,
         pageTitle:'Voter | Welcome to the dashboard',
         path:'/v/dashboard'
     });
+    })
+   
 }
 
 //voter came here firest using public link
@@ -41,3 +62,192 @@ exports.getVoterVerification = (req, res, next) =>{
     })
     
 }
+
+
+exports.getWallet = (req, res, next)=>{
+    // console.log(req.voter.election.electionId)
+    res.render('voter/wallet',{
+        wallet: req.voter.wallet,
+        balance : null,
+        showBalance:false,
+        voter:req.voter,
+        electionId : req.voter.election.electionId,
+        pageTitle:'Voter | Welcome to the dashboard',
+        path:'/v/wallet'
+    });
+}   
+
+exports.postWallet = (req, res, next)=>{
+     
+    
+    var keypair = ec.genKeyPair();
+    req.voter.wallet.status = true; 
+    const pub = keypair.getPublic('hex');
+    const prv = keypair.getPrivate('hex');
+    return req.voter.save()
+    .then(result =>{
+        Election.findById(req.voter.election.electionId)
+        .then(e =>{
+            const pubn = [];
+            let voterWalletN = [...e.wallet.voterWallet]
+            voterWalletN.push({pub:pub})
+            e.wallet.voterWallet = voterWalletN;
+            return e.save()
+        })
+        .then(() =>{
+        //  res.redirect('/v/dashboard')
+         const pdfDoc = new pdfDocuments({size: 'A4'});
+         res.setHeader('Content-Type', 'application/pdf');
+         
+         res.setHeader('Content-Dispositison', 'inline; filenname="'+req.voter._id+'"');
+        //  res.setHeader('Content-Disposition', 'attachment; filenname="'+req.voter._id+'"');
+         // pdfDoc.pipe(fs.createWriteStream(invoicePath));  //for creeating on server
+     
+         pdfDoc.pipe(res);
+     
+         pdfDoc
+         .fontSize(26)
+         .fillColor('grey')
+         .text('Wallet of Voter for Election',{
+           underline:true
+         });
+     
+         pdfDoc
+         .fontSize(26)
+         .fillColor('green')
+         .text('---------------------------------------------------');
+         pdfDoc
+         .fontSize(19)
+         .fillColor('grey')
+         .text('Election Title :- '+req.voter.election.electionTitle);
+         pdfDoc
+         .fontSize(26)
+         .fillColor('green')
+         .text('---------------------------------------------------');
+     
+         pdfDoc
+           .fontSize(12)
+           .fillColor('black')
+           .font('Times-Roman')
+           .text('Public Key =  '+pub);
+         pdfDoc.text(' ');
+       
+         pdfDoc
+           .fontSize(12)
+           .fillColor('black')
+           .font('Times-Roman')
+           .text('Private Key =  '+prv);
+         pdfDoc.text(' ');
+         pdfDoc
+         .fontSize(12)
+         .fillColor('black')
+         .font('Times-Roman')
+         .text('Blockchain Voting System | voter wallet pdf', 300,750);
+     
+         var utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+         pdfDoc
+         .fontSize(12)
+         .fillColor('black')
+         .font('Times-Roman')
+         .text('Date :- '+utc, 410,50);
+         
+     
+         pdfDoc.end();
+        })
+    })
+ 
+
+    
+
+}   
+
+//check balance
+exports.postBallance = (req, res, next)=>{
+    const electionId = req.body.electionId;
+    const pubkey = req.body.pubkey.split(/\s/).join('');
+   // return console.log(pubkey);
+    Election.findById(electionId)
+    .then(e=>{
+       // console.log(e.blockchain)
+       return Blockchain.findById(e.blockchain)   
+    })
+    .then(b=>{
+           return b.knowBalance(pubkey)
+    })
+    .then(balance=>{
+            res.render('voter/wallet',{
+                wallet: req.voter.wallet,
+                showBalance:true,
+                balance : balance,
+                voter:req.voter,
+                electionId : req.voter.election.electionId,
+                pageTitle:'Voter | Welcome to the dashboard',
+                path:'/v/wallet'
+            });
+    })
+}
+
+//voter came here firest using public link
+exports.getVote = (req, res, next)=>{
+    const electionId = req.voter.election.electionId;
+
+    Election.findById(electionId)
+    .then(e=>{
+        if(!e.wallet.hasAnnounced){
+            return res.redirect('/v/dashboard')
+        }
+        res.render('voter/vote',{
+            voter:req.voter,
+            isVote:false,
+            election:e,
+            pageTitle:`${req.voter.election.electionTitle} | Welcome to the election details`,
+            path:'/v/election-details'
+        });
+    })
+
+
+
+    // req.voter
+    // .populate('election.electionId')
+    // .execPopulate()
+    // .then(v=>{
+
+        // console.log(v.election.candidatesDetails)
+        // res.render('voter/vote',{
+        //     voter:req.voter,
+        //     election:v.election,
+        //     pageTitle:`${req.voter.election.electionTitle} | Welcome to the election details`,
+        //     path:'/v/election-details'
+        // });
+    // })
+   
+}
+
+exports.postVote= (req, res, next)=>{
+    const electionId = req.voter.election.electionId;
+    const cId = req.body.cId;
+    const cPub = [{pub:cId}]
+    const vPub = req.body.vPub.split(/\s/).join('');
+    //console.log(vPub)
+     console.log(cPub)
+    Election.findById(electionId)
+    .then(e=>{
+            Blockchain.findById(e.blockchain)
+            .then(b=>{
+                
+                return b.addTransaction(vPub, 1, cPub)
+            })
+            .then(b=>{
+                if(b){
+                    console.log('success')
+                    res.redirect('/v/dashboard');
+                }else{
+                    console.log('false')
+                    res.redirect('/v/dashboard');
+                }
+
+            })
+    })
+
+
+}    
