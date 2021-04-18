@@ -198,6 +198,7 @@ exports.getVote = (req, res, next)=>{
         }
         res.render('voter/vote',{
             voter:req.voter,
+            errorMsg:null,
             isVote:false,
             election:e,
             pageTitle:`${req.voter.election.electionTitle} | Welcome to the election details`,
@@ -228,8 +229,27 @@ exports.postVote= (req, res, next)=>{
     const cId = req.body.cId;
     const cPub = [{pub:cId}]
     const vPub = req.body.vPub.split(/\s/).join('');
+    const vPrv = req.body.vPrv.split(/\s/).join('');
+    const prvInstance = ec.keyFromPrivate(vPrv,'hex'); 
+    const pubInstance = ec.keyFromPublic(vPub,'hex');
     //console.log(vPub)
-     console.log(cPub)
+   //  console.log(prvInstance.getPublic('hex'))
+   const sign = prvInstance.sign('has vrified');
+
+   if(!pubInstance.verify('has vrified', sign)){
+    Election.findById(electionId)
+     .then(e=>{
+    res.render('voter/vote',{
+        voter:req.voter,
+        errorMsg:'Not verified!',
+        isVote:false,
+        election:e,
+        pageTitle:`${req.voter.election.electionTitle} | Welcome to the election details`,
+        path:'/v/election-details'
+    });
+    });
+   } 
+
     Election.findById(electionId)
     .then(e=>{
             Blockchain.findById(e.blockchain)

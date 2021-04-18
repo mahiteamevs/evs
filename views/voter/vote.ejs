@@ -7,7 +7,9 @@
 <h1>Give your vote</h1>
    <!-- // <div > -->
        <div class="wrapper1">
-        
+        <% if(errorMsg) {%> 
+          <div class="user-message user-message-error"><%= errorMsg %></div>
+      <% } %> 
         <form action="/v/vote" method="post" class="card">
                 <p>Enter your public key</p>
               <br>
@@ -15,10 +17,14 @@
                 <label>Public Key</label>
                 <input type="text" class="input" name ="vPub" autocomplete="off">
             </div>
+            <div class="input_field">
+              <label>Private Key</label>
+              <input type="text" class="input" name ="vPrv" autocomplete="off">
+          </div>
                    <% election.candidatesDetails.forEach(c=>{%> 
                     <div class="input_field">
                         <label><%=c.candName %> </label>
-                        <input type="radio"  name ="cId" value ="<%=c.candidateWallet.pub%>">
+                        <input type="radio"  name ="cId" value ="<%=c.candidateWallet.pub%>" required>
                         <input type="hidden"  name ="cPub" value ="<%=c.candidateWallet.pub%>">
                         <span hidden style="text-overflow: ellips;"><%=c.candidateWallet.pub%></span>
                     </div>
