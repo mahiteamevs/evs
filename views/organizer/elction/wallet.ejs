@@ -5,12 +5,14 @@
 <%- include('../../partials/navigation') %> 
 <%- include('../../partials/electnav') %> 
 
-<h1>Please create your wallet first</h1>
    <!-- // <div > -->
        <div class="wrapper1">
         <!-- <div class="logo">
             <img src="https://image.shutterstock.com/shutterstock/photos/1342666157/display_1500/stock-vector-hand-voting-ballot-box-icon-election-vote-concept-simple-flat-design-for-web-site-logo-app-ui-1342666157.jpg" alt="">
         </div> -->
+        <h2>Admin Wallet</h2>
+        <p>Keep it safe.</p>
+        <hr>
         
        <!-- // <div > -->
         <% if(!wallet.isCreated) {%> 
@@ -47,7 +49,7 @@
                 <form action="/o/balance" method="post" class="card">
                     <h2>Hurray!</h2>
                     <p>Wanna Check your available balance</p>
-                    <p>Open your pdf <i class="fas fa-file-pdf"></i> adn type here your public key</i></p >
+                    <p>Open your pdf <i class="fas fa-file-pdf"></i> and type here your public key</i></p >
                         <div class="input_field">
                             <label>Public Key</label>
                             <input type="text" class="input" name ="pubkey" autocomplete="off">

@@ -4,6 +4,8 @@ const Voter = require('../models/voter');
 const otps = require('../utils/otp');
 const cryptoHash = require('../utils/cryptohash');
 const crypto = require('crypto');
+const {validationResult} = require("express-validator");
+
 
 //sending mails
 require('dotenv').config();
@@ -26,6 +28,10 @@ exports.getVoterLogin=(req, res, next) => {
         res.render('voter/auth/login',{
             linkId :linkId,
             electionId : election._id,
+            electionTitle:election.electionTitle,
+            errorMsg : "",
+            validationErrors:[],
+            oldInput : {email:null},
             pageTitle:"Login | Plz log in to proceed further"
         });
        }else{
@@ -39,7 +45,23 @@ exports.postLogin = (req, res, next) => {
     const email = req.body.vEmail;
     const linkId = req.body.linkId;
     const electionId = req.body.electionId;
-
+    const electionT = req.body.eTitle;
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){       // if email was empty
+        return res.status(422)
+        .render('voter/auth/login',{
+            linkId :linkId,
+            electionId : electionId,
+            electionTitle:electionT,
+            pageTitle:"Login | Plz log in to proceed further",
+            path:"/login",
+            isSignupMode:false,
+            errorMsg:errors.array()[0].msg,
+             oldInput : {email:null},
+            validationErrors:errors.array()
+    
+        });
+    }
     crypto.randomBytes(32,(err,buffer)=>{
         if(err){
             console.log(err);

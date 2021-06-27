@@ -2,7 +2,7 @@
     <img src="/img/voteloader1.gif" alt="Loading..." />
 </div>
         <header class="header">
-            <a href="#" class="header__logo"></a>
+            <!-- <a href="#" class="header__logo"></a> -->
 
             <i class='fas fa-bars header__toggle' id="header-toggle" ></i>
 
@@ -20,6 +20,10 @@
     
                     <div class="nav__menu">
                         <ul class="nav__list">
+                            <li class="nav__item"> <form class="example" action="/action_page.php" style="margin:auto;">
+                                <input type="text" placeholder="Search transaction,an address or block" name="search2" style="height: 30px;width: 250px;">
+                                <button type="submit"><i class="fa fa-search"></i></button>
+                              </form></li>
                             <li class="nav__item"><a href="/o/dashboard" class="nav__link <%= path === '/o/dashboard' ? 'active' : '' %>">Home <i class="fas fa-home"></i></a></li>
 
                             <li class="nav__item"><a href="/o/create" class="nav__link <%= path === '/o/create' ? 'active' : '' %>">Create <i class="fas fa-plus" ></i></a></li>

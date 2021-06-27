@@ -47,4 +47,10 @@ router.post('/announce',isOauth,organizerController.postAnnounce);
 
 //balance
 router.post('/balance',isOauth, organizerController.postBallance);
+
+router.get('/:electionTitle/:electionId/result',isOauth, organizerController.getResult);
+
+//candididate details and voterController
+router.get('/:electionTitle/:electionId/candidate-details',isOauth, organizerController.getCanDet);
+
 exports.routes = router;

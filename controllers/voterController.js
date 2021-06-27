@@ -150,7 +150,16 @@ exports.postWallet = (req, res, next)=>{
          .fillColor('black')
          .font('Times-Roman')
          .text('Date :- '+utc, 410,50);
+
+         pdfDoc
+         .fillColor('red')
+         .text('right click in this page and then go homepage', 400,450, {
+           link: 'http://localhost:3000/v/wallet',
+           underline: true
+         }
+      );
          
+     
      
          pdfDoc.end();
         })

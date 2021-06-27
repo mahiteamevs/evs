@@ -3,12 +3,17 @@
 
 <%- include('../../partials/title') %> 
 
-<h2 class="title centered">Election : </h2>
-<h3 class=" centered">Please Login to proceed further!</h3>
+
 <div class="wrapper1">
 
-    
+    <h2 class="title centered">Election :- <%= electionTitle %> </h2>
+<h3 class=" centered">Please Login to proceed further!</h3>
+<hr>
+<% if(errorMsg ) {%> 
+    <div class="user-message user-message-error"><%= errorMsg %></div>
+<% } %> 
 <form action="/vlogin" method="post" class="card">
+     
     <div class="input_field">
         <label>Email</label>
         <input type="email" class="input" name ="vEmail">
@@ -17,6 +22,7 @@
         <input type="hidden" name="_csrf" value="<%=csrfToken%>">
         <input type="hidden" value="<%=linkId%>" name="linkId">
         <input type="hidden" value="<%=electionId%>" name="electionId">
+        <input type="hidden" name="eTitle" value="<%=electionTitle%>">
         <input type="submit" value="Submit" class="submit_btn">
     </div>
 </form>

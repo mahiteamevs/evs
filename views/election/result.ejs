@@ -1,0 +1,48 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/resultcss.css">
+    <title>list</title>
+</head>
+<body>
+    <center>
+    <h1><%=election.electionTitle%></h1>
+    <h2>Result</h2>
+
+
+<table class="styled-table">
+
+
+    <thead>
+        <tr>
+            <th>S.No.</th>
+            <th>Name of Candidate</th>
+            <th>Age</th>
+             <th>Bitvote</th>
+              <th>Rank</th>
+        </tr>
+    </thead>
+  
+          
+            <% let i=1 %> 
+            <% election.candidatesDetails.forEach(c=>{%> 
+     
+                    <td><%= i ? '0'+i++ : i++ %> </td>
+            <td><%=c.candName %></td>
+            <td><%=c.candAge %></td>
+            <td ><%= canBV[i-1] %> </td>
+            <td>1</td>
+                <!-- </div> -->
+            </tr>
+               <%   }) %> 
+        
+        
+        
+    </tbody>
+
+</table>
+</center>
+</body>
+</html>

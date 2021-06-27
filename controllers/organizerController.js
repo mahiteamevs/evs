@@ -324,8 +324,8 @@ exports.postCoinBase = (req, res)=>{
            
            const pubAdmin = election.wallet.adminWallet.pub;
            const bId = election.blockchain;
-           const numCandidate = election.candidatesDetails.length;
-    
+           const numCandidate = election.voterMails.length;  //num of bitvote will created in coinbase
+           console.log(numCandidate)
            Blockchain.findById(bId)
            .then(b=>{
             b.coinBaseTransaction(pubAdmin, numCandidate);
@@ -432,24 +432,7 @@ exports.postAnnounce = (req, res, next) =>{
            res.redirect('/o/dashboard');
        }
     });
-    //add genesis block
-    //mining
-    // Election.findById(electionId)
-    // .then(election=>{
-    //    const bId = election.blockchain;
-    //    Blockchain.findById(bId)
-    //    .then(b=>{
-    //        b.mining();
-    //    })
-    
-    // })
-    // .catch(err=>{
-    //     console.log(err);
-    // })
 
-    //transaction to itself
-
-    //create a link
 }
 
 //check balance
@@ -482,4 +465,102 @@ exports.postBallance = (req, res, next)=>{
         })
     })    
     })
+}
+
+function voteBV(b){
+    Blockchain.findById(b)
+    .then(b=>{
+             
+        candBV.push(b.knowBalance(i.candidateWallet.pub))
+        return console.log(candBV)
+    }) 
+}
+
+//results
+
+exports.getResult = (req, res) =>{
+    const electionId = req.params.electionId;
+    req.admin
+    .populate('elections.electionId')
+    .execPopulate()
+    .then(admin=>{
+        
+       const eIds = admin.elections.map(e=>{
+           return e.electionId._id.toString();
+       }) 
+     //   console.log(eIds, electionId)
+       if(eIds.indexOf(electionId.toString())!==-1){            //checking is that election exist in the Admins election
+          Election.findById(electionId)
+         .then(election =>{
+
+            const candBV =[]
+            let l=0;
+          var canBC =  election.candidatesDetails.map(i=>{   
+            Blockchain.findById(election.blockchain)
+             .then(b=>{
+               return b.knowBalance(i.candidateWallet.pub)
+              //  console.log(election.candidatesDetails[0].candidateWallet.balance=0)
+                })
+                .then(bv =>{
+                    
+                    console.log(bv)
+                    election.wallet.candidateWallet[l].prv =  bv;
+                    return election.save();
+                })
+                .catch(error=>{console.log(error)})
+               l++;
+            })
+  
+          res.render('election/result',{
+              election:election,
+              wallet:election.wallet,
+              admin:req.admin,
+              canBV:[],
+              pageTitle: election.electionTitle+' | Election Results ',
+              publicLink : election.voterPublicLink,
+              path:"/result"
+          })
+        //res.redirect('/o/dashboard');
+         })
+       } else{
+           res.redirect('/o/dashboard');
+       }
+    });
+}
+
+// candidatesDetails
+
+exports.getCanDet = (req, res) => {
+
+    const electionId = req.params.electionId;
+    req.admin
+    .populate('elections.electionId')
+    .execPopulate()
+    .then(admin=>{
+        
+       const eIds = admin.elections.map(e=>{
+           return e.electionId._id.toString();
+       }) 
+     //   console.log(eIds, electionId)
+       if(eIds.indexOf(electionId.toString())!==-1){            //checking is that election exist in the Admins election
+          Election.findById(electionId)
+         .then(election =>{
+
+
+            res.render('organizer/elction/candetails',{
+                election:election,
+                wallet:election.wallet,
+                admin:req.admin,
+                canBV:[],
+                pageTitle: election.electionTitle+' | Candidate details ',
+                publicLink : election.voterPublicLink,
+                path:"/candidatesdetails"
+            })
+          //res.redirect('/o/dashboard');
+           })
+         } else{
+             res.redirect('/o/dashboard');
+         }
+      });
+
 }

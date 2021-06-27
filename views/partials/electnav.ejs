@@ -46,10 +46,10 @@
                       
                       <li><a href="/o/<%=election.electionTitle%>/<%=election._id%>/wallet"  class="elect__nav__link <%= path === '/wallet' ? 'eactive' : '' %>"><i class="fas fa-wallet"></i>Admin Wallet</a></li>
                       <li><a href="/o/<%=election.electionTitle%>/<%=election._id%>/announce"  class="elect__nav__link <%= path === '/announce' ? 'eactive' : '' %>"><i class="fas fa-bullhorn"></i></i>Announce Election</a></li>
-                      <li><a href="/p/transaction/<%=election._id%>/"  class="elect__nav__link <%= path === '/transaction' ? 'eactive' : '' %>"><i class="fas fa-project-diagram"></i>Transactions</a></li>
+                      <li><a href="/p/transaction/<%=election._id%>/"  class="elect__nav__link <%= path === '/transaction' ? 'eactive' : '' %>" target="_blank"><i class="fas fa-project-diagram"></i>Transactions</a></li>
                       <li><a href=""  class="elect__nav__link <%= path === '/electiondetails' ? 'eactive' : '' %>"><i class="fas fa-person-booth"></i>Election Details</a></li>
                       <li><a href="#"  class="elect__nav__link <%= path === '/votersdetails' ? 'eactive' : '' %>"><i class="fas fa-address-card"></i>Voter Details</a></li>
-                      <li><a href="#"  class="elect__nav__link <%= path === '/candidatesdetails' ? 'eactive' : '' %>"><i class="fas fa-address-card"></i>Candidate
+                      <li><a href="/o/<%=election.electionTitle%>/<%=election._id%>/candidate-details"  class="elect__nav__link <%= path === '/candidatesdetails' ? 'eactive' : '' %>"><i class="fas fa-address-card"></i>Candidate
                          Details</a></li>
 
                       <li><a  href="/o/<%=election.electionTitle%>/<%=election._id%>/result" class="elect__nav__link <%= path === '/result' ? 'eactive' : '' %>"><i class="fas fa-poll"></i>Result</a></li>

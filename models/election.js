@@ -17,7 +17,10 @@ const electionSchema = new Schema({
         candidateWallet : {
             pub:String,
             prv: String,
-            balance: Number
+            balance: String
+        },
+        bitvote:{
+            type: String
         }
 
     }],

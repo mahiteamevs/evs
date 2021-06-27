@@ -187,8 +187,8 @@ blockchainSchema.methods.addTransaction = function(sender, amountSend, receiver)
      }
      //console.log(availableBal)
     let tempBal = availableBal;
-    console.log(amountSend)
-   console.log(sender, amountSend, receiver);
+//     console.log(amountSend)
+//    console.log(sender, amountSend, receiver);
 
     let outputMap = receiver.map(r=>{
         availableBal -= 1;
@@ -227,6 +227,7 @@ blockchainSchema.methods.addTransaction = function(sender, amountSend, receiver)
 blockchainSchema.methods.coinBaseTransaction = function(receiver, amount){
     const wholeChain = [...this.chain];
     const lastHash = wholeChain[wholeChain.length-1].hash;
+   
    // let hash;
    const {timestamp, nonce, hash } = minedBlock(receiver, amount,lastHash);
 
@@ -238,9 +239,11 @@ blockchainSchema.methods.coinBaseTransaction = function(receiver, amount){
         const transaction = [{ 
                 hash: cryptoHash(outputMap),
                 inputAdrs : "COIN BASE BIT VOTE TRANSFERED",
+                inputVal:amount,
                 output:outputMap
             }];
 
+           
        wholeChain.push({
             index:2,
             timestamp : timestamp,
@@ -249,7 +252,7 @@ blockchainSchema.methods.coinBaseTransaction = function(receiver, amount){
             prevHash : lastHash,
             transactions:transaction
         });
-
+     
    this.chain= wholeChain;
     return this.save();
 }

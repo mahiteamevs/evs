@@ -16,12 +16,14 @@ exports.getTransaction = (req, res, next)=>{
       return  Blockchain.findById(e.blockchain)
     })
     .then(b=>{
+       
         //console.log(b.chain)
         res.render('election/transaction',{
         pageTitle:`Transac tion | Welcome to the election details`,
         path:'/v/election-details',
         admin:req.admin,
-        chain :b.chain
+        chain :b.chain,
+        eId:b.election.electionId
     });
     })
 
@@ -50,4 +52,32 @@ exports.postBallance = (req, res, next)=>{
             
         }
     })
+}
+
+//get block info
+exports.getBlock = (req, res, next)=>{
+ const eId = req.params.eId;
+ const bId = req.params.bId;
+ const hId = req.params.hId;
+
+ Election.findById(eId)
+ .then(e=>{
+     if(!e && e.blockchain===bId){
+         return res.redirect('/o/dashboard');
+     }
+   return  Blockchain.findById(e.blockchain)
+ })
+ .then(b=>{
+   
+     res.render('election/hashinfo',{
+     pageTitle:`Transac tion | Welcome to the election details`,
+     path:'/v/election-details',
+     admin:req.admin,
+     electionTitle:b.election.electionTitle,
+     chain:b.chain,
+     block :b.chain[hId-1],
+     eId:b.election.electionId
+ });
+ })
+
 }
