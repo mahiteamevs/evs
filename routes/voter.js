@@ -1,4 +1,5 @@
 const express = require("express");
+const {body} = require("express-validator");
 
 const voterController = require('../controllers/voterController');
 const isVauth = require('../middlewares/isvauth');
@@ -23,7 +24,17 @@ router.post('/balance',isVauth,voterController.postBallance);
 
 //voting
 router.get('/vote',isVauth,voterController.getVote);
-router.post('/vote', isVauth,voterController.postVote);
+router.post('/vote',
+
+[
+    body('vPub', 'Enter valid Public key ')
+    .isString()
+    .isLength({min:60}),
+    body('vPrv', 'Enter valid Private key ')
+    .isString()
+    .isLength({min:30}),
+    body('radio', 'Choose a candidate '),
+], isVauth,voterController.postVote);
 
 exports.routes = router; 
 

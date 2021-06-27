@@ -206,7 +206,17 @@ exports.postLogin = (req, res, next) => {
             })
             
         }else{
-            console.log('Not found')
+         //   console.log('Not found')
+            res.render('voter/auth/login',{
+                linkId :linkId,
+                electionId : electionId,
+                electionTitle:electionT,
+                pageTitle:"Login | Plz log in to proceed further",
+                path:"/login",
+                errorMsg:"Mail not found with associated election",
+                 oldInput : {email:null},
+                validationErrors:errors.array()
+            });
         }
     })
 
@@ -245,6 +255,16 @@ exports.postOtp = (req, res, next) => {
    
   }else{
       console.log('error')
+      res.render('voter/auth/login',{
+        linkId :linkId,
+        electionId : electionId,
+        electionTitle:electionT,
+        pageTitle:"Login | Plz log in to proceed further",
+        path:"/login",
+        errorMsg:"Wrong otp!",
+         oldInput : {email:null},
+        validationErrors:errors.array()
+    });
   }
     
 })
