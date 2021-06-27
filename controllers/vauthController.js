@@ -55,11 +55,9 @@ exports.postLogin = (req, res, next) => {
             electionTitle:electionT,
             pageTitle:"Login | Plz log in to proceed further",
             path:"/login",
-            isSignupMode:false,
             errorMsg:errors.array()[0].msg,
              oldInput : {email:null},
             validationErrors:errors.array()
-    
         });
     }
     crypto.randomBytes(32,(err,buffer)=>{

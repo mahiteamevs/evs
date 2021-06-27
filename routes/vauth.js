@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/public/:link',authVcontroller.getVoterLogin);
 router.post('/vlogin',
 [
-body('email','Please enter a valid email address!')
+body('vEmail','Please enter a valid email address!')
 .isEmail()
 .normalizeEmail(),
 ]
