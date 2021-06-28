@@ -140,6 +140,9 @@ exports.postLogin = (req, res, next) => {
                           email:email,
                           linkId :linkId,
                          electionId : electionId,
+                         electionTitle:electionT,
+                         errorMsg:"",
+                         validationErrors:[],
                          isNewOne : true,
                          pageTitle:"Otp verification | Plz log in to proceed further"
                              });
@@ -198,6 +201,9 @@ exports.postLogin = (req, res, next) => {
                     email:email,
                     linkId :linkId,
                    electionId : electionId,
+                   electionTitle:electionT,
+                   errorMsg:"",
+                   validationErrors:[],
                    pageTitle:"Otp verification | Plz log in to proceed further"
                        });
                   })
@@ -233,7 +239,7 @@ exports.postOtp = (req, res, next) => {
     const email = req.body.vEmail;
     const linkId = req.body.linkId;
     const electionId = req.body.electionId;
-
+    const electionT = req.body.eTitle;
     Voter.findOne({"election.electionId":electionId ,email:email, "otpval.pass":otp, "otpval.expireTime" :{$gt :Date.now()}})
     .then(voter=>{
 

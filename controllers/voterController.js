@@ -8,7 +8,7 @@ const path = require('path');
 const fs = require('fs');
 const pdfDocuments = require('pdfkit');
 
-
+const {validationResult} = require("express-validator");
 
 exports.getVdashboard = (req, res)=>{
     
@@ -241,13 +241,38 @@ exports.postVote= (req, res, next)=>{
     const vPrv = req.body.vPrv.split(/\s/).join('');
     const prvInstance = ec.keyFromPrivate(vPrv,'hex'); 
     const pubInstance = ec.keyFromPublic(vPub,'hex');
+    const errors = validationResult(req);
     //console.log(vPub)
    //  console.log(prvInstance.getPublic('hex'))
+
+//    if(!errors.isEmpty()){       // if email was empty
+//     return res.status(422)
+//     .render('voter/vote',{
+//         pageTitle:`${req.voter.election.electionTitle} | Welcome to the election details`,
+//         path:'/v/election-details',
+//         isSignupMode:false,
+   
+//         errorMsg:errors.array()[0].msg,
+//         validationErrors:errors.array()
+
+//     });
+// }
+
    const sign = prvInstance.sign('has vrified');
 
    if(!pubInstance.verify('has vrified', sign)){
     Election.findById(electionId)
      .then(e=>{
+    if(e.wallet.voterWallet.indexOf(vPub)===-1){
+        res.render('voter/vote',{
+            voter:req.voter,
+            errorMsg:'Not verified!',
+            isVote:false,
+            election:e,
+            pageTitle:`${req.voter.election.electionTitle} | Welcome to the election details`,
+            path:'/v/election-details'
+        });
+    }   
     res.render('voter/vote',{
         voter:req.voter,
         errorMsg:'Not verified!',
@@ -255,7 +280,8 @@ exports.postVote= (req, res, next)=>{
         election:e,
         pageTitle:`${req.voter.election.electionTitle} | Welcome to the election details`,
         path:'/v/election-details'
-    });
+    });  
+   
     });
    } 
 
@@ -271,8 +297,14 @@ exports.postVote= (req, res, next)=>{
                     console.log('success')
                     res.redirect('/v/dashboard');
                 }else{
-                    console.log('false')
-                    res.redirect('/v/dashboard');
+                    res.render('voter/vote',{
+                        voter:req.voter,
+                        errorMsg:'No balance!',
+                        isVote:false,
+                        election:e,
+                        pageTitle:`${req.voter.election.electionTitle} | Welcome to the election details`,
+                        path:'/v/election-details'
+                    });
                 }
 
             })

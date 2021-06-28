@@ -10,7 +10,7 @@ router.post('/vlogin',
 [
 body('vEmail','Please enter a valid email address!')
 .isEmail()
-.normalizeEmail(),
+,
 ]
 ,authVcontroller.postLogin);
 //router.get('/votp',authVcontroller.getVoterOtp);
