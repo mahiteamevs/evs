@@ -216,21 +216,6 @@ exports.getVote = (req, res, next)=>{
     })
 
 
-
-    // req.voter
-    // .populate('election.electionId')
-    // .execPopulate()
-    // .then(v=>{
-
-        // console.log(v.election.candidatesDetails)
-        // res.render('voter/vote',{
-        //     voter:req.voter,
-        //     election:v.election,
-        //     pageTitle:`${req.voter.election.electionTitle} | Welcome to the election details`,
-        //     path:'/v/election-details'
-        // });
-    // })
-   
 }
 
 exports.postVote= (req, res, next)=>{

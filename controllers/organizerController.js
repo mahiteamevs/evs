@@ -10,6 +10,16 @@ const crypto = require('crypto');
 var EC = require('elliptic').ec;
 var ec = new EC('secp256k1');    //for rsa and generating keypair
 const {validationResult} = require("express-validator");
+//sending mails
+require('dotenv').config();
+const nodemailer = require('nodemailer');
+const {google} = require('googleapis');
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET; 
+const REDIRECT_URI = process.env.REDIRECT_URI;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
+const oAuth2Client = new google.auth.OAuth2(CLIENT_ID,CLIENT_SECRET,REDIRECT_URI);
+oAuth2Client.setCredentials({refresh_token : REFRESH_TOKEN});
 
 
 exports.getOdashboard = (req, res, next)=>{
@@ -112,6 +122,7 @@ exports.postOcreateElection = (req, res)=>{
         console.log(err);
         }
    const link = buffer.toString('hex');
+
     const election = new Election({
         _id:electionId,
         electionTitle: electionTitle,
@@ -134,7 +145,8 @@ exports.postOcreateElection = (req, res)=>{
 
         res.redirect('/o/dashboard');
     })
-});
+})  
+
 
     
 }
@@ -563,4 +575,75 @@ exports.getCanDet = (req, res) => {
          }
       });
 
+}
+
+
+//postin mails
+exports.postvMails = (req, res) => {
+    const electionId = req.body.eId; 
+    req.admin
+    .populate('elections.electionId')
+    .execPopulate()
+    .then(admin=>{
+        
+       const eIds = admin.elections.map(e=>{
+           return e.electionId._id.toString();
+       }) 
+
+     //   console.log(eIds, electionId)
+     if(eIds.indexOf(electionId.toString())!==-1){            //checking is that election exist in the Admins election
+        //create wallet for admin and candidates
+        Election.findById(electionId)
+        .then(election=>{
+           
+           let mails = election.voterMails.map(i=>{   //mails of all voters
+            return i.voterMail;
+        })
+    //    console.log(mails)
+        mails.forEach(m=>{
+            async function sendMail(){
+                try {
+                    const accessToken = await oAuth2Client.getAccessToken();
+            
+                    const transport = nodemailer.createTransport({
+                        service :'gmail',
+                        auth : {
+                            type: 'OAuth2',
+                            user:'mahiteamevs@gmail.com',
+                            clientId : CLIENT_ID,
+                            clientSecret : CLIENT_SECRET,
+                            refreshToken :REFRESH_TOKEN,
+                            accessToken:accessToken
+                        },
+                    });
+                    const mailOptions = {
+                        from :'MAHITEAM <mahiteamevs@gmail.com>',
+                        to:m,
+                        subject : "YOUR PUBLIC LINK FOR ELECTION LOGIN",
+                        text: "dont share it with anyone ",
+                        html:`
+                               <h3>Here is your public link</h3>
+                               <p> click here to <a href="http://localhost:3000/public/${election.voterPublicLink}">http://localhost:3000/public//${election.voterPublicLink}</a></p>   
+                        `,
+                    };
+                    const result = await transport.sendMail(mailOptions);
+                    return result;
+                } catch (error) {
+                    return error;
+                }
+            }
+    
+            sendMail()
+            .then((result)=>{
+               // console.log('Email sent....')
+            })  
+        })    
+        })
+        .then(result=>{
+            res.redirect('/o/dashboard');
+        })  
+        } else{
+            res.redirect('/o/dashboard');
+        }
+     });
 }

@@ -53,4 +53,6 @@ router.get('/:electionTitle/:electionId/result',isOauth, organizerController.get
 //candididate details and voterController
 router.get('/:electionTitle/:electionId/candidate-details',isOauth, organizerController.getCanDet);
 
+//posting public mails to all the votersGmail
+router.post('/maillink', isOauth, organizerController.postvMails);
 exports.routes = router;

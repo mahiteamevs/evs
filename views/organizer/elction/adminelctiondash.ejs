@@ -41,6 +41,15 @@
             
           </div>
     </div>
+    <form action="/o/maillink" method="post">
+        <button class="copyButton">
+            Send public link as a mails to the voter
+        </button>
+        <input type="hidden" name="eId" value="<%=election._id%>">
+        <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+    </form>
+    
+
 </center>
 <script>
     function copy(copyId){
