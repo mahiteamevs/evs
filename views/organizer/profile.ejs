@@ -5,150 +5,41 @@
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap" rel="stylesheet">
    
-    <!-- <style>
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Josefin Sans',sans-serif;
-        }
-        body{
-            background-color: white;
-        }
-        .main-div{
-          width: 100%;
-          height: 100vh;
-          position: relative;
-        }
-        .box{
-            width: 400px;
-            border: 1px solid grey;
-            /* height: 600px; */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50% ,-50%);
-            padding: 50px;
-            background: white;
-            border-radius: 10px;
-        }
-        .box h1{
-            margin-bottom: 30px;
-            color: #6200ff;
-            text-align: center;
-            text-transform: capitalize;
-        }
-        .box .inputBox{
-           position: relative;
-        }
-        .box .inputBox input{
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            color: #6200ff;
-            letter-spacing: 1px;
-            margin-bottom: 30px;
-            border: none;
-            border-bottom: 1px solid #6200ff;
-            background: transparent;
-            outline: none;
-        }
-        .box .inputBox label{
-           position: absolute;
-           top: 0;
-           left: 0;
-           letter-spacing: 1px;
-           padding: 10px 0;
-           font-size: 16px;
-           font-weight: bold;
-           color: #6200ff;
-           transition: 0.5s;
-        }
-        /* label up before write something in box */
-        .box .inputBox input:focus ~ label,
-        .box .inputBox input:valid ~ label {
-            top: -20px;
-            left: 0;
-            color: #dbc441;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .btn{
-            background: transparent;
-            display:flex;
-            justify-content: center;
-            text-align: center;
-            text-decoration: none;
-            height: 40px;
-            width: 90px;
-            border: none;
-            outline: none;
-            color: #6200ff;
-            background: #dbc441;
-            padding: 8px 16px;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            
-        }
-        .btn i {
-            text-decoration: none;
-            text-align: center;
-
-        }
-        .dob{
-            color:#6200ff;
-        }
-        .state{
-            color: #6200ff;
-        }
-    </style> -->
 
 </head>
 <body>
+    <div class="wrapper1">
    
+        <div class="title">
+            <p>Organisation Profile</p>
+        </div>
+    <form action="/o/profile" method="post" class="card">
     <div class="main_div">
-     <div class="box">
-        <span class="fa-stack fa-lg">
-            <i class="fa fa-square-o fa-stack-2x"></i>
-            <a href="/o/dashboard"><i class="fa fa-arrow-left fa-stack-1x"></i></a>
-          </span>
-        <!-- <a href="/o/dashboard"><i class="fa fa-arrow-left"></i></a> -->
-         <h1>Organisation Profile</h1>
-         <form action="">
-             <!-- <div class="inputBox">
-                 <input type="text" name="username" autocomplete="off" required>
-                 <label> username </label>
-             </div> -->
-             <!-- <div class="inputBox">
-                 <input type="password" name="password" autocomplete="off" required>
-                 <label> password </label>
-             </div> -->
-             <!-- <input type="submit" name="" value="login"> -->
-
-             <!-- tauqueer code -->
              
-             <div class="inputBox">
-             <input type="text" name="First Name" autocomplete="off" required>
-             <label> firstname </label>
+             <div class="input_field">
+                <label> firstname </label>
+             <input type="text" name="First Name" class="input" autocomplete="off" required>
+            
             </div>
 
             </br>
-            <div class="inputBox">
-            <input type="text" name="Last Name" required autocomplete="off" required>
-            <label> lastname </label>
+            <div class="input_field">
+                <label> lastname </label>
+            <input type="text" name="Last Name" class="input" required autocomplete="off" required>
+            
             </div>
            <label class="dob">DOB:</label>
     <!-- &nbsp&nbsp; -->
     <input type="date" name="dob"required> <br><br>
          
-        <div class="inputBox">
-        <input type="number" name="mobile" required autocomplete="off" required>
-        <label> mobile no </label>
+        <div class="input_field">
+            <label> Mobile no </label>
+        <input type="text" name="mobile" class="input" required autocomplete="off" required>
+        
         </div> 
 
-    <label for="state" class="state">Select State</label>
-    <select id="state">
+    <label for="state" class="input_field">Select State</label>
+    <select id="state" class="input">
             <option value="select state">Select State</option>
             <option value="Andhra Pradesh">Andhra Pradesh</option>
             <option value="Arunachal Pradesh">Arunachal Pradesh</option>
@@ -181,20 +72,22 @@
             </select><br><br>
             
             <div class="inputBox">
+                <label> Address </label>
             <input type="text" name="address" required autocomplete="off" required>
-            <label> Address </label>
+           
         </div>
         
-        <div class="inputBox">
-        <input type="text" name="bio" required autocomplete="off" required>
-        <label> Bio </label>
+        <div class="input_field">
+            <label> Bio </label>
+        <input type="text" name="bio" class="input" required autocomplete="off" required>
+      
         </div>
-
-        <button type="submit" class="btn">save<i class="fa fa-lock" aria-hidden="true"></i></button>
-    <!-- <input type="Submit" name="" value="save"><i class="fa fa-lock" aria-hidden="true"></i> -->
-    <!-- <input type="Edit" ><i class="fa fa-pencil" aria-hidden="true"></i> -->
-            <!-- <input type="submit" name="" value="login"> -->
+        <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+        <div class="btn">
+            <input type="submit" value="Submit" class="submit_btn">
+        </div>
          </form>
      </div>
-    </div>
+ 
+
     <%- include('../partials/footer') %> 

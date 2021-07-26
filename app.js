@@ -91,11 +91,6 @@ app.use((req, res,next)=>{
   next();
 });
 
-// const a = new Admin({
-//   name:"mahi",
-//   elections:[]
-// });
-// a.save();
 
 //routes used
 app.use('/o', oraganizerRoutes.routes);
