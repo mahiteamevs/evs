@@ -452,37 +452,41 @@ function voteBV(b) {
 
 exports.getResult = async (req, res) => {
   const electionId = req.params.electionId;
-  const admin1 = await req.admin
-    .populate("elections.electionId")
-    .execPopulate();
+  try {
+    const admin1 = await req.admin
+      .populate("elections.electionId")
+      .execPopulate();
 
-  const eIds = admin1.elections.map((e) => {
-    return e.electionId._id.toString();
-  });
-
-  if (eIds.indexOf(electionId.toString()) !== -1) {
-    //checking is that election exist in the Admins election
-    const election = await Election.findById(electionId);
-
-    var candBV = [];
-
-    for (const i of election.candidatesDetails) {
-      const bl = await Blockchain.findById(election.blockchain);
-      const bv = await bl.knowBalance(i.candidateWallet.pub);
-      candBV.push(bv);
-    }
-    await res.render("election/result", {
-      election: election,
-      wallet: election.wallet,
-      admin: req.admin,
-      canBV: candBV,
-      pageTitle: election.electionTitle + " | Election Results ",
-      publicLink: election.voterPublicLink,
-      path: "/result",
+    const eIds = admin1.elections.map((e) => {
+      return e.electionId._id.toString();
     });
-    res.redirect("/o/dashboard");
-  } else {
-    res.redirect("/o/dashboard");
+
+    if (eIds.indexOf(electionId.toString()) !== -1) {
+      //checking is that election exist in the Admins election
+      const election = await Election.findById(electionId);
+
+      var candBV = [];
+
+      for (const i of election.candidatesDetails) {
+        const bl = await Blockchain.findById(election.blockchain);
+        const bv = await bl.knowBalance(i.candidateWallet.pub);
+        candBV.push(bv);
+      }
+      await res.render("election/result", {
+        election: election,
+        wallet: election.wallet,
+        admin: req.admin,
+        canBV: candBV,
+        pageTitle: election.electionTitle + " | Election Results ",
+        publicLink: election.voterPublicLink,
+        path: "/result",
+      });
+      res.redirect("/o/dashboard");
+    } else {
+      res.redirect("/o/dashboard");
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
