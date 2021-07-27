@@ -481,7 +481,6 @@ exports.getResult = async (req, res) => {
         publicLink: election.voterPublicLink,
         path: "/result",
       });
-      res.redirect("/o/dashboard");
     } else {
       res.redirect("/o/dashboard");
     }

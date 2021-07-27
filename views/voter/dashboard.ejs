@@ -21,7 +21,7 @@
          </div>
          <div class="card__actions">  
         <div class="wrap-del">
-           <div class="tlink"><a   href="/p/transaction/?electId=<%=election.electionId%>"><i class="fas fa-project-diagram"></i></a> </div>
+           <div class="tlink"><a   href="/p/transaction/<%=election._id%>/"><i class="fas fa-project-diagram"></i></a> </div>
            <div class="btndel">
             <form action="/o/vote" method="get">
                <input type="hidden" name="_csrf" value="<%=csrfToken%>">

@@ -60,14 +60,17 @@ exports.getVoterVerification = (req, res, next) => {
 
 exports.getWallet = (req, res, next) => {
   // console.log(req.voter.election.electionId)
-  res.render("voter/wallet", {
-    wallet: req.voter.wallet,
-    balance: null,
-    showBalance: false,
-    voter: req.voter,
-    electionId: req.voter.election.electionId,
-    pageTitle: "Voter | Welcome to the dashboard",
-    path: "/v/wallet",
+  Election.findById(req.voter.election.electionId).then((election) => {
+    res.render("voter/wallet", {
+      wallet: req.voter.wallet,
+      balance: null,
+      showBalance: false,
+      voter: req.voter,
+      election: election,
+      electionId: req.voter.election.electionId,
+      pageTitle: "Voter | Welcome to the dashboard",
+      path: "/v/wallet",
+    });
   });
 };
 
@@ -171,14 +174,17 @@ exports.postBallance = (req, res, next) => {
       return b.knowBalance(pubkey);
     })
     .then((balance) => {
-      res.render("voter/wallet", {
-        wallet: req.voter.wallet,
-        showBalance: true,
-        balance: balance,
-        voter: req.voter,
-        electionId: req.voter.election.electionId,
-        pageTitle: "Voter | Welcome to the dashboard",
-        path: "/v/wallet",
+      Election.findById(req.voter.election.electionId).then((election) => {
+        res.render("voter/wallet", {
+          wallet: req.voter.wallet,
+          showBalance: true,
+          balance: balance,
+          voter: req.voter,
+          election: election,
+          electionId: req.voter.election.electionId,
+          pageTitle: "Voter | Welcome to the dashboard",
+          path: "/v/wallet",
+        });
       });
     });
 };
@@ -300,7 +306,6 @@ exports.getResult = async (req, res) => {
         voter: req.voter,
         path: "/result",
       });
-      res.redirect("/v/dashboard");
     } else {
       res.redirect("/v/dashboard");
     }

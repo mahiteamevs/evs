@@ -20,8 +20,9 @@
     
                     <div class="nav__menu">
                         <ul class="nav__list">
-                            <li class="nav__item"> <form class="example" action="/action_page.php" style="margin:auto;">
-                                <input type="text" placeholder="Search transaction,an address or block" name="search2" style="height: 30px;width: 250px;">
+                            <li class="nav__item"> <form class="example" action="/p/search" style="margin:auto;">
+                                <input type="text" placeholder="Search transaction,an address or block" name="b" style="height: 30px;width: 250px;">
+                                <input type="hidden" name="_csrf" value="<%=csrfToken%> ">
                                 <button type="submit"><i class="fa fa-search"></i></button>
                               </form></li>
                             <li class="nav__item"><a href="/o/dashboard" class="nav__link <%= path === '/o/dashboard' ? 'active' : '' %>">Home <i class="fas fa-home"></i></a></li>
