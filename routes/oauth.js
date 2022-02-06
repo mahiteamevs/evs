@@ -6,6 +6,7 @@ const isLog = require('../middlewares/islogin');
 const router = express.Router();
 
 router.get('/',isLog, authVcontroller.getLogin);
+
 router.post('/ologin',
 [
     body('email','Please enter a valid email address!')
