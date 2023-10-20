@@ -15,14 +15,13 @@ const error404 = require("./controllers/error");
 const Admin = require("./models/admin");
 const Voter = require("./models/voter");
 //mongodb url
-const MONGODB_URI = "mongodb://localhost:27017/mvs";
 
 const app = express();
 
 //session for orgainzeer
 const oSessionStore = new MongoDBstore({
   //calling constructor
-  uri: MONGODB_URI,
+  uri: process.env.MongoUri,
   collection: "osession",
 });
 const csrfProtection = csrf(); //csrf token
@@ -98,6 +97,9 @@ app.use("/v", voterRoutes.routes);
 app.use(authoRoutes);
 app.use(authvRoutes);
 app.use("/p/", electRoutes.routes);
+app.get("/about", (req, res) => {
+  res.render("about");
+});
 app.use(error404.get404);
 
 //server
