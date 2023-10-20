@@ -10,10 +10,10 @@ const session = require("express-session");
 const MongoDBstore = require("connect-mongodb-session")(session);
 const csrf = require("csurf");
 //controllers require
-const error404 = require("./controllers/error");
+const error404 = require("./controllers/error.js");
 //model requires
-const Admin = require("./models/admin");
-const Voter = require("./models/voter");
+const Admin = require("./models/admin.js");
+const Voter = require("./models/voter.js");
 //mongodb url
 
 const app = express();
@@ -27,11 +27,11 @@ const oSessionStore = new MongoDBstore({
 const csrfProtection = csrf(); //csrf token
 
 //routes
-const oraganizerRoutes = require("./routes/oraganizer");
-const authoRoutes = require("./routes/oauth");
-const voterRoutes = require("./routes/voter");
-const authvRoutes = require("./routes/vauth");
-const electRoutes = require("./routes/electiontransaction");
+const oraganizerRoutes = require("./routes/oraganizer.js");
+const authoRoutes = require("./routes/oauth.js");
+const voterRoutes = require("./routes/voter.js");
+const authvRoutes = require("./routes/vauth.js");
+const electRoutes = require("./routes/electiontransaction.js");
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));

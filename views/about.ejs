@@ -39,10 +39,11 @@
       }
       .developers {
         display: flex;
+        flex-wrap: wrap; /* Make the list wrap to the next line in small screens */
         justify-content: space-between;
       }
       .developer {
-        flex-basis: 30%;
+        flex-basis: calc(33.33% - 20px); /* Three columns with some margin */
         margin: 10px;
         text-align: center;
       }
@@ -51,16 +52,23 @@
         height: 100px;
         border-radius: 50%;
       }
+
+      /* Media query for screens smaller than 768px (typical mobile devices) */
+      @media (max-width: 768px) {
+        .developer {
+          flex-basis: calc(50% - 20px); /* Two columns for smaller screens */
+        }
+      }
     </style>
   </head>
   <body>
     <header>
-      <!-- image logo -->
-      <a href="/" style="color: #ecefda">
+      <!-- logo -->
+      <a href="/" style="color: #dbe9f2">
         <img
           src="/img/symbol.png"
-          alt="Logo"
           style="height: 100px; width: 100px"
+          alt="Logo"
         />
         <h1>Blockchain Voting System</h1>
       </a>
@@ -74,24 +82,24 @@
         elections are conducted, ensuring trust, security, and accessibility for
         all voters.
       </p>
-      <!-- about blockchain -->
-
       <h2>Meet the Developers</h2>
       <div class="developers">
         <div class="developer">
           <img src="/img/mudassir.png" alt="Developer 1" />
-          <h3>Md Mudassir</h3>
-          <p>Frontend & UI/UX Developer</p>
+          <h3>Mudassir</h3>
+          <p>Frontend & UI/UX</p>
         </div>
+        <a href="https://shoaib.techfestsliet.org" target="_blank">
+          <div class="developer">
+            <img src="/img/shoaib.png" alt="Developer 2" />
+            <h3>Shoaib</h3>
+            <p>Backend & Blockchain</p>
+          </div>
+        </a>
         <div class="developer">
-          <img src="/img/shoaib.png" alt="Developer 2" />
-          <h3>Md Shoaib Akhtar</h3>
-          <p>Software Engineer & CP</p>
-        </div>
-        <div class="developer">
-          <img src="developer3.jpg" alt="Developer 3" />
-          <h3>Md Tauqueer</h3>
-          <p>Frontend Designer</p>
+          <img src="/img/tauq.jpeg" alt="Developer 3" />
+          <h3>Tauqueer Ahmad</h3>
+          <p>UI/UX Designer</p>
         </div>
       </div>
     </div>
